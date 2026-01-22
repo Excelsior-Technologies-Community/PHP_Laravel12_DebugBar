@@ -1,59 +1,392 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_Laravel12_DebugBar
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+## Project Description
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The PHP_Laravel12_DebugBar project is a simple Laravel 12 web application designed to demonstrate the use of Laravel Debugbar for debugging and monitoring your application. It includes basic pages, database testing, and integration with Laravel Debugbar to visualize queries, logs, and performance metrics directly in the browser.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project is ideal for Laravel beginners who want to learn how to integrate Debugbar and inspect application behavior, database queries, and request lifecycle in real-time.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Laravel Debugbar Integration: Easily track database queries, log messages, and application performance.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Multiple Pages: Home, About, Contact, and DB Test pages.
 
-## Laravel Sponsors
+Database Testing: Display all users from the database via Debugbar.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Bootstrap UI: Clean and responsive layout using Bootstrap 5.
 
-### Premium Partners
+Easy-to-Understand Structure: Ideal for learning Laravel basics and debugging.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
 
-## Contributing
+## Pages Overview
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Home Page: Displays a welcome message.
 
-## Code of Conduct
+About Page: Provides information about the project.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Contact Page: Simple contact page example.
 
-## Security Vulnerabilities
+DB Test Page: Fetches all records from the users table and logs them in Debugbar.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Key Technologies
+
+Laravel 12
+
+PHP 8.2
+
+MySQL
+
+Laravel Debugbar
+
+Bootstrap 5
+
+---
+
+
+
+# Project SetUp
+
+---
+
+## STEP 1: Create New Laravel 12 Project
+
+### Run Command :
+
+```
+composer create-project laravel/laravel PHP_Laravel12_DebugBar "12.*"
+
+```
+
+### Go inside project:
+
+```
+cd PHP_Laravel12_DebugBar
+
+```
+
+Make sure Laravel 12 is installed successfully.
+
+
+
+
+## STEP 2: Install Debugbar
+
+### Run:
+
+```
+composer require barryvdh/laravel-debugbar --dev
+
+```
+
+### Publish configuration:
+
+```
+php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
+
+```
+
+
+
+
+## STEP 3: Database Configuration and enable Debugbar:
+
+### Open .env file and update database credentials:
+
+```
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=debugbar_test
+DB_USERNAME=root
+DB_PASSWORD=
+
+
+
+APP_ENV=local
+APP_DEBUG=true
+DEBUGBAR_ENABLED=true
+
+
+
+```
+
+### Create database:
+
+```
+debugbar_test
+
+```
+
+### Then run migrations:
+
+```
+php artisan migrate
+
+```
+
+
+
+
+## STEP 4: Create Controller
+
+### Run:
+
+```
+php artisan make:controller PageController
+
+```
+
+### Edit app/Http/Controllers/PageController.php:
+
+```
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Debugbar;
+use DB;
+
+class PageController extends Controller
+{
+    public function home()
+    {
+        Debugbar::info('Home page loaded');
+        return view('pages.home');
+    }
+
+    public function about()
+    {
+        Debugbar::info('About page loaded');
+        return view('pages.about');
+    }
+
+    public function contact()
+    {
+        Debugbar::info('Contact page loaded');
+        return view('pages.contact');
+    }
+
+    public function dbTest()
+    {
+        $users = DB::table('users')->get();
+        Debugbar::info($users); // Shows queries
+        return 'Check Debugbar for DB queries!';
+    }
+}
+
+```
+
+
+## STEP 5: Setup Routes
+
+### Edit routes/web.php:
+
+```
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/db-test', [PageController::class, 'dbTest'])->name('db-test');
+
+```
+
+
+
+
+## STEP 5: Create Blade Layout
+
+### resources/views/layouts/app.blade.php:
+
+```
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel Debugbar Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ route('home') }}">DebugbarApp</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('db-test') }}">DB Test</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    @yield('content')
+</div>
+
+<footer class="bg-dark text-white text-center p-3 mt-5">
+    &copy; 2026 Laravel Debugbar Example
+</footer>
+</body>
+</html>
+
+```
+
+## STEP 7: Create Pages
+
+### Home Page
+
+resources/views/pages/home.blade.php:
+
+```
+
+@extends('layouts.app')
+
+@section('content')
+<h1 class="text-center">Home Page</h1>
+<p class="text-center">Welcome to Laravel Debugbar Example.</p>
+@endsection
+
+```
+
+### About Page
+
+resources/views/pages/about.blade.php:
+
+```
+
+@extends('layouts.app')
+
+@section('content')
+<h1 class="text-center">About Page</h1>
+<p class="text-center">This is a sample about page to test Debugbar.</p>
+@endsection
+
+```
+
+### Contact Page
+
+resources/views/pages/contact.blade.php:
+
+```
+
+@extends('layouts.app')
+
+@section('content')
+<h1 class="text-center">Contact Page</h1>
+<p class="text-center">This is a sample contact page to test Debugbar.</p>
+@endsection
+
+```
+
+
+
+## STEP 8: Clear Cache
+
+### Run:
+
+```
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+
+```
+
+## STEP 10: Running the App
+
+### Finally run the development server:
+
+```
+php artisan serve
+
+```
+
+### Visit in browser:
+
+```
+http://localhost:8000
+
+```
+
+
+## So You can see this type Output:
+
+
+### Home Page:
+
+
+<img width="1919" height="970" alt="Screenshot 2026-01-21 124127" src="https://github.com/user-attachments/assets/0a33badf-e993-418f-a304-88061639a428" />
+
+
+### About Page:
+
+
+<img width="1915" height="971" alt="Screenshot 2026-01-21 124159" src="https://github.com/user-attachments/assets/bf6ca4cb-fd8b-4545-81fb-7afa4f145feb" />
+
+
+### Contact Page:
+
+
+<img width="1916" height="971" alt="Screenshot 2026-01-21 124210" src="https://github.com/user-attachments/assets/97ea918e-9dd8-4909-830e-5f45e83b8987" />
+
+
+### DB-test Page:
+
+
+<img width="1919" height="972" alt="Screenshot 2026-01-21 124218" src="https://github.com/user-attachments/assets/49c936ae-4204-4dc3-b3e8-d9e722597aa9" />
+
+
+### and also show this type:
+
+
+<img width="1904" height="539" alt="Screenshot 2026-01-21 132330" src="https://github.com/user-attachments/assets/286999a8-5b55-41b0-9a90-0e4967d3e3f6" />
+
+<img width="1911" height="565" alt="Screenshot 2026-01-21 132338" src="https://github.com/user-attachments/assets/a51834f1-66dd-4354-9c0d-30a644cc83a1" />
+
+<img width="1919" height="546" alt="Screenshot 2026-01-21 132356" src="https://github.com/user-attachments/assets/40ea827b-83d4-408c-9ddd-be2a4e34bb58" />
+
+
+---
+
+
+# Project Folder Structure:
+
+```
+
+PHP_Laravel12_DebugBar/
+├─ app/
+│  └─ Http/
+│     └─ Controllers/
+│        └─ PageController.php
+├─ resources/
+│  └─ views/
+│     ├─ layouts/
+│     │  └─ app.blade.php
+│     └─ pages/
+│        ├─ home.blade.php
+│        ├─ about.blade.php
+│        └─ contact.blade.php
+├─ routes/
+│  └─ web.php
+├─ config/
+│  └─ debugbar.php
+├─ .env
+└─ composer.json
+
+```
+
