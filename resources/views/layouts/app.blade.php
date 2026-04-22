@@ -16,6 +16,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('db-test') }}">DB Test</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('users') }}">Users List</a></li> <!-- New -->
             </ul>
         </div>
     </div>
