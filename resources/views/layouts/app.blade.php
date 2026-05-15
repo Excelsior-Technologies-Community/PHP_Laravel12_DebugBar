@@ -16,7 +16,8 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('db-test') }}">DB Test</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('users') }}">Users List</a></li> <!-- New -->
+                <li class="nav-item"><a class="nav-link" href="{{ route('users') }}">Users List</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('ajax.test') }}">Ajax Test</a></li>
             </ul>
         </div>
     </div>
@@ -29,5 +30,7 @@
 <footer class="bg-dark text-white text-center p-3 mt-5">
     &copy; 2026 Laravel Debugbar Example
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

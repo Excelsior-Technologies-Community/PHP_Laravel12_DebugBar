@@ -4,51 +4,64 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Debugbar;
-use DB;
 use App\Models\User;
+use Exception;
 
 class PageController extends Controller
 {
-    // Home Page with total users count in Debugbar
     public function home()
     {
+        Debugbar::startMeasure('user_count_timer');
         $usersCount = User::count();
+        Debugbar::stopMeasure('user_count_timer');
+
         Debugbar::info("Total users: $usersCount");
-        Debugbar::info('Home page loaded');
         return view('pages.home');
     }
 
-    // About Page
     public function about()
     {
         Debugbar::info('About page loaded');
         return view('pages.about');
     }
 
-    // Contact Page
     public function contact()
     {
         Debugbar::info('Contact page loaded');
         return view('pages.contact');
     }
 
-    // DB Test Page with query duration
     public function dbTest()
     {
-        $start = microtime(true);
-        $users = DB::table('users')->get();
-        $duration = microtime(true) - $start;
-        
-        // Optional: keep query duration logged
-        Debugbar::info("DB query took {$duration} seconds");
+        try {
+            Debugbar::startMeasure('query_execution');
+            $users = User::all();
+            Debugbar::stopMeasure('query_execution');
 
-        return view('pages.db-test', compact('users', 'duration'));
+            return view('pages.db-test', ['users' => $users, 'duration' => 0]);
+        } catch (Exception $e) {
+            Debugbar::addThrowable($e);
+            return response('Error logged in Debugbar.');
+        }
     }
-    // New Users List Page
+
     public function users()
     {
-        $users = DB::table('users')->get();
+        $users = User::all();
         Debugbar::info('Users List page loaded');
         return view('pages.users', compact('users'));
+    }
+
+    public function ajaxView()
+    {
+        return view('pages.ajax-test');
+    }
+
+    public function ajaxData()
+    {
+        return response()->json([
+            'status' => 'success',
+            'users' => User::limit(5)->get()
+        ]);
     }
 }
