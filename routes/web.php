@@ -7,4 +7,7 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/db-test', [PageController::class, 'dbTest'])->name('db-test');
-Route::get('/users', [PageController::class, 'users'])->name('users'); // New Users page
+Route::get('/users', [PageController::class, 'users'])->name('users');
+
+Route::get('/ajax-test', [PageController::class, 'ajaxView'])->name('ajax.test');
+Route::get('/get-ajax-data', [PageController::class, 'ajaxData']);
