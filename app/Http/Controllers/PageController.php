@@ -64,4 +64,42 @@ class PageController extends Controller
             'users' => User::limit(5)->get()
         ]);
     }
+    public function performance()
+{
+    Debugbar::startMeasure('page_load');
+    
+    // Simulate some heavy operations
+    sleep(1); // Simulate processing time
+    
+    // Get PHP info
+    $phpInfo = [
+        'version' => phpversion(),
+        'memory_limit' => ini_get('memory_limit'),
+        'max_execution_time' => ini_get('max_execution_time'),
+        'upload_max_filesize' => ini_get('upload_max_filesize')
+    ];
+    
+    Debugbar::stopMeasure('page_load');
+    Debugbar::info('Performance page loaded');
+    
+    return view('pages.performance', compact('phpInfo'));
+}
+
+public function eventTest()
+{
+    Debugbar::startMeasure('event_test');
+    
+    // Trigger events for testing
+    event(new \App\Events\UserAction('test_event', 'Performance page visited'));
+    
+    Debugbar::stopMeasure('event_test');
+    Debugbar::info('Event test page loaded');
+    
+    return view('pages.event-test');
+}
+public function eventTestPage()
+{
+    event(new \App\Events\UserAction('test_event', 'Event test page visited'));
+    return response()->json(['status' => 'Event triggered']);
+}
 }
